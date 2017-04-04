@@ -1,28 +1,22 @@
-var path = require('path');
-var webpack = require('webpack');
-
 module.exports = {
-  devtool: 'eval',
-  entry: [
-    'webpack-dev-server/client?http://localhost:3000',
-    './src/index.jsx'
-  ],
+  devtool: 'source-map',
+  entry: './src/index.jsx',
   output: {
-    path: path.join(__dirname, 'dist'),
-    filename: 'bundle.js',
-    publicPath: '/build/'
+    filename: 'bundle.js'
   },
   module: {
-    loaders: [
-      {
-        test: /\.jsx?$/,
-        loaders: ['babel'],
-        include: path.join(__dirname, 'src')
-      },
-      {
-        test: /\.scss$/,
-        loaders: ["style", "css", "sass"]
-      }
-    ]
+    rules: [{
+      test: /\.scss$/,
+      use: [{
+        loader: "style-loader" // creates style nodes from JS strings
+      }, {
+        loader: "css-loader" // translates CSS into CommonJS
+      }, {
+        loader: "sass-loader" // compiles Sass to CSS
+      }]
+    }, {
+      test: /\.jsx$/,
+      loader: 'babel-loader'
+    }]
   }
-}
+};
