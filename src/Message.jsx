@@ -1,14 +1,19 @@
 import React from 'react';
-import MessageList from './MessageList.jsx';
 
 class Message extends React.Component {
   render() {
+    console.log('Rendering <Message/>');
     return (
       <div>
-        <nav className="navbar">
-            <a href="/" className="navbar-brand">Chatty</a>
-          </nav>
-        <MessageList />
+        <main className="messages">
+          <div className="message">
+            <span className="message-username">Anonymous1</span>
+            <span className="message-content">I won't be impressed with technology until I can download food.</span>
+          </div>
+          <div className="message system">
+            Anonymous1 changed their name to nomnom.
+          </div>
+        </main>
       </div>
     );
   }
