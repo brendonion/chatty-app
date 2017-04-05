@@ -2,10 +2,10 @@ import React from 'react';
 
 class Chatbar extends React.Component {
 
-  constructor(props){
-    super(props);
-    this.handleKeyPress = this.handleKeyPress.bind(this);
-  }
+  // constructor(props){
+  //   super(props);
+  //   this.handleKeyPress = this.handleKeyPress.bind(this);
+  // }
 
   handleKeyPress = (event) => {
     if(event.key === 'Enter') {
@@ -19,8 +19,6 @@ class Chatbar extends React.Component {
   }
 
   render() {
-    console.log(this.props.enter);
-    console.log(this.handleKeyPress);
     return (
       <footer className="chatbar">
         <input className="chatbar-username" placeholder={this.props.username.name} />

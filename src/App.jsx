@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import MessageList from './MessageList.jsx';
 import ChatBar from './ChatBar.jsx';
 
+
 class App extends Component {
   constructor(props){
     super(props);
@@ -26,11 +27,19 @@ class App extends Component {
   }
 
 
+  componentDidMount() {
+    const socket = new WebSocket('ws://localhost:3001');
+    this.socket = socket;
+    socket.onopen = (event) => {
+      console.log('Connected to server'); 
+    };
+  }
+
+
   sendMessage(input) {
     setTimeout(() => {
       const user = this.state.currentUser.name;
       console.log(user);
-      console.log(this.state.messages.length);
       const newMessage = {id: this.state.messages.length + 1, username: user, content: input};
       const messages = this.state.messages.concat(newMessage);
       this.setState({
