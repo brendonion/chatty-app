@@ -41,12 +41,9 @@ class App extends Component {
 
 
   sendName(input) {
-    setTimeout(() => {
-      const newUser = {name: input};
-      this.setState({
-        currentUser: newUser
-      })
-    }, 1000);
+    this.setState({
+      currentUser: {name: input}
+    })
   }
 
 
