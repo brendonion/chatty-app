@@ -29,14 +29,17 @@ class App extends Component {
     setTimeout(() => {
       const user = this.state.currentUser.name;
       console.log(user);
-      const newMessage = {id: this.state.messages.length + 1, username: user, content: input};
-      const messages = this.state.messages.concat(newMessage);
-      const messageData = {username: user, content: input};
-      // this.setState({
-      //   messages: messages
-      // })
-      const theMessage = JSON.stringify(messageData);
+      const newMessage = {username: user, content: input};
+      const theMessage = JSON.stringify(newMessage);
       this.socket.send(theMessage);
+      this.socket.onmessage = (event) => {
+        console.log(event.data);
+        const returnedMessage = JSON.parse(event.data);
+        const messages = this.state.messages.concat(returnedMessage);
+        this.setState({
+          messages: messages
+        })
+      }
     }, 1000);
   }
 
