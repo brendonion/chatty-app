@@ -23,18 +23,28 @@ class App extends Component {
     };
 
     this.sendMessage = this.sendMessage.bind(this);
+    this.sendName = this.sendName.bind(this);
   }
 
 
   sendMessage(input) {
     setTimeout(() => {
       const user = this.state.currentUser.name;
-      console.log(user);
       console.log(this.state.messages.length);
-      const newMessage = {id: this.state.messages.length + 1, username: user, content: input};
+      const newMessage = {id: this.state.messages.length + 1, currentUser: user, content: input};
       const messages = this.state.messages.concat(newMessage);
       this.setState({
         messages: messages
+      })
+    }, 1000);
+  }
+
+
+  sendName(input) {
+    setTimeout(() => {
+      const newUser = {name: input};
+      this.setState({
+        currentUser: newUser
       })
     }, 1000);
   }
@@ -48,7 +58,8 @@ class App extends Component {
           <a href="/" className="navbar-brand">Chatty</a>
         </nav>
         <MessageList messages={this.state.messages} />
-        <ChatBar username={this.state.currentUser} enter={this.sendMessage}  />
+        <ChatBar username={this.state.currentUser} enter={this.sendMessage} 
+          newuser={this.sendName} />
       </div>
     );
   }
