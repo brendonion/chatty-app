@@ -3,6 +3,8 @@ import MessageList from './MessageList.jsx';
 import ChatBar from './ChatBar.jsx';
 
 
+
+
 class App extends Component {
   constructor(props){
     super(props);
@@ -22,6 +24,13 @@ class App extends Component {
     socket.onopen = (event) => {
       console.log('Connected to server'); 
     };
+    this.socket.onmessage = (event) => {
+      const returnedMessage = JSON.parse(event.data);
+      const messages = this.state.messages.concat(returnedMessage);
+      this.setState({
+        messages: messages
+      })
+    }
   }
 
 
@@ -32,14 +41,6 @@ class App extends Component {
       const newMessage = {username: user, content: input};
       const theMessage = JSON.stringify(newMessage);
       this.socket.send(theMessage);
-      this.socket.onmessage = (event) => {
-        console.log(event.data);
-        const returnedMessage = JSON.parse(event.data);
-        const messages = this.state.messages.concat(returnedMessage);
-        this.setState({
-          messages: messages
-        })
-      }
     }, 1000);
   }
 
