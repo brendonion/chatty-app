@@ -9,18 +9,7 @@ class App extends Component {
 
     this.state = {
       currentUser: {name: "Bob"},
-      messages: [
-        {
-          id: "1",
-          username: "Bob",
-          content: "Has anyone seen my marbles?"
-        },
-        {
-          id: "2",
-          username: "Anonymous",
-          content: "No, I think you lost them. You lost your marbles Bob. You lost them for good."
-        }
-      ]
+      messages: [] // messages coming from the server will be stored here as they arrive
     };
 
     this.sendMessage = this.sendMessage.bind(this);
