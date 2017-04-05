@@ -42,9 +42,12 @@ class App extends Component {
       console.log(user);
       const newMessage = {id: this.state.messages.length + 1, username: user, content: input};
       const messages = this.state.messages.concat(newMessage);
-      this.setState({
-        messages: messages
-      })
+      const messageData = {username: user, content: input};
+      // this.setState({
+      //   messages: messages
+      // })
+      const theMessage = JSON.stringify(messageData);
+      this.socket.send(theMessage);
     }, 1000);
   }
 
