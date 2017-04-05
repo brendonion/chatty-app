@@ -3,8 +3,6 @@ import MessageList from './MessageList.jsx';
 import ChatBar from './ChatBar.jsx';
 
 
-
-
 class App extends Component {
   constructor(props){
     super(props);
@@ -15,9 +13,10 @@ class App extends Component {
     };
 
     this.sendMessage = this.sendMessage.bind(this);
+    this.changeName = this.changeName.bind(this);
   }
 
-
+  // Checks for connections to server, and broadcasts all new messages
   componentDidMount() {
     const socket = new WebSocket('ws://localhost:3001');
     this.socket = socket;
@@ -33,7 +32,7 @@ class App extends Component {
     }
   }
 
-
+  // Sends message to WebSocket
   sendMessage(input) {
     setTimeout(() => {
       const user = this.state.currentUser.name;
@@ -42,6 +41,13 @@ class App extends Component {
       const theMessage = JSON.stringify(newMessage);
       this.socket.send(theMessage);
     }, 1000);
+  }
+
+  // Function that changes username
+  changeName(input) {
+    this.setState({
+      currentUser: {name: input}
+    })
   }
 
 
@@ -53,7 +59,8 @@ class App extends Component {
           <a href="/" className="navbar-brand">Chatty</a>
         </nav>
         <MessageList messages={this.state.messages} />
-        <ChatBar username={this.state.currentUser} enter={this.sendMessage}  />
+        <ChatBar username={this.state.currentUser} enter={this.sendMessage}
+        changename={this.changeName} />
       </div>
     );
   }
