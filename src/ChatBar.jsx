@@ -10,7 +10,9 @@ class Chatbar extends React.Component {
   handleKeyPress = (event) => {
     if(event.key === 'Enter') {
       console.log(event.target.value);
-      return this.props.enter(event.target.value);
+      this.props.enter(event.target.value);
+      event.target.value = '';
+      return;
     } else {
       return false;
     }
