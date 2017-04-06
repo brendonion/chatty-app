@@ -26,18 +26,35 @@ wss.on('connection', (ws) => {
   console.log('Client connected');
   ws.on('message', function incoming(message) {
     let theMessage = JSON.parse(message);
-    console.log(`User ${theMessage.username} said ${theMessage.content}`);
-    let returnMessage = {
-      id: uuidV1(),
-      username: theMessage.username, 
-      content: theMessage.content
-    };
-    let broadcastMessage = JSON.stringify(returnMessage);
-    wss.clients.forEach(function each(client) {
-      if (client.readyState === WebSocket.OPEN) {
-        client.send(broadcastMessage);
-      }
-    });
+    console.log(theMessage);
+    if (theMessage.type === 'postMessage') {
+      console.log(theMessage);
+      console.log(`User ${theMessage.username} said ${theMessage.content}`);
+      let returnMessage = {
+        type: 'incomingMessage',
+        id: uuidV1(),
+        username: theMessage.username, 
+        content: theMessage.content
+      };
+      let broadcastMessage = JSON.stringify(returnMessage);
+      wss.clients.forEach(function each(client) {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(broadcastMessage);
+        }
+      });
+    } else if (theMessage.type === 'postNotification'){
+      console.log('cheers');
+      let returnMessage = {
+        type: 'incomingNotification',
+        content: theMessage.content
+      };
+      let broadcastMessage = JSON.stringify(returnMessage);
+      wss.clients.forEach(function each(client) {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(broadcastMessage);
+        }
+      });
+    }
   });
 
 
