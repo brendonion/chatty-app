@@ -5,7 +5,6 @@ const SocketServer = require('ws').Server;
 const uuidV1 = require('uuid/v1');
 const WebSocket = require('ws');
 
-console.log(uuidV1());
 
 // Set the port to 3001
 const PORT = 3001;
@@ -26,18 +25,32 @@ wss.on('connection', (ws) => {
   console.log('Client connected');
   ws.on('message', function incoming(message) {
     let theMessage = JSON.parse(message);
-    console.log(`User ${theMessage.username} said ${theMessage.content}`);
-    let returnMessage = {
-      id: uuidV1(),
-      username: theMessage.username, 
-      content: theMessage.content
-    };
-    let broadcastMessage = JSON.stringify(returnMessage);
-    wss.clients.forEach(function each(client) {
-      if (client.readyState === WebSocket.OPEN) {
-        client.send(broadcastMessage);
-      }
-    });
+    if (theMessage.type === 'postMessage') {
+      console.log(`User ${theMessage.username} said ${theMessage.content}`);
+      let returnMessage = {
+        type: 'incomingMessage',
+        id: uuidV1(),
+        username: theMessage.username, 
+        content: theMessage.content
+      };
+      let broadcastMessage = JSON.stringify(returnMessage);
+      wss.clients.forEach(function each(client) {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(broadcastMessage);
+        }
+      });
+    } else if (theMessage.type === 'postNotification'){
+      let returnMessage = {
+        type: 'incomingNotification',
+        content: theMessage.content
+      };
+      let broadcastMessage = JSON.stringify(returnMessage);
+      wss.clients.forEach(function each(client) {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(broadcastMessage);
+        }
+      });
+    }
   });
 
 

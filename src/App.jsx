@@ -8,7 +8,7 @@ class App extends Component {
     super(props);
 
     this.state = {
-      currentUser: {name: "Bob"},
+      currentUser: {name: "Anonymous"},
       messages: [] // messages coming from the server will be stored here as they arrive
     };
 
@@ -24,11 +24,25 @@ class App extends Component {
       console.log('Connected to server'); 
     };
     this.socket.onmessage = (event) => {
-      const returnedMessage = JSON.parse(event.data);
-      const messages = this.state.messages.concat(returnedMessage);
-      this.setState({
-        messages: messages
-      })
+    const data = JSON.parse(event.data);
+      switch (data.type) {
+        case 'incomingMessage':
+          const messages = this.state.messages.concat(data);
+          this.setState({
+            messages: messages
+          })
+          break;
+        case 'incomingNotification':
+          const notifications = this.state.messages.concat(data);
+          console.log(notifications);
+          this.setState({
+            messages: notifications
+          })
+          break;
+        default:
+        // show an error in the console if the message type is unknown
+        throw new Error("Unknown event type " + data.type);  
+      }
     }
   }
 
@@ -36,15 +50,21 @@ class App extends Component {
   sendMessage(input) {
     setTimeout(() => {
       const user = this.state.currentUser.name;
-      console.log(user);
-      const newMessage = {username: user, content: input};
-      const theMessage = JSON.stringify(newMessage);
-      this.socket.send(theMessage);
+      const newMessage = {type: 'postMessage', username: user, content: input};
+      const sendMessage = JSON.stringify(newMessage);
+      this.socket.send(sendMessage);
     }, 1000);
   }
 
   // Function that changes username
   changeName(input) {
+    const currentName = this.state.currentUser.name;
+    const notification = {
+      type: 'postNotification', 
+      content: (currentName + ' has changed their name to ' + input)
+    };
+    const sendName = JSON.stringify(notification);
+    this.socket.send(sendName);
     this.setState({
       currentUser: {name: input}
     })
