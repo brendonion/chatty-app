@@ -9,7 +9,7 @@ class App extends Component {
 
     this.state = {
       currentUser: {name: "Anonymous"},
-      messages: [] // messages coming from the server will be stored here as they arrive
+      messages: [], // messages coming from the server will be stored here as they arrive
     };
 
     this.sendMessage = this.sendMessage.bind(this);
@@ -21,7 +21,7 @@ class App extends Component {
     const socket = new WebSocket('ws://localhost:3001');
     this.socket = socket;
     socket.onopen = (event) => {
-      console.log('Connected to server'); 
+      console.log('User Connected');
     };
     this.socket.onmessage = (event) => {
     const data = JSON.parse(event.data);
@@ -34,10 +34,13 @@ class App extends Component {
           break;
         case 'incomingNotification':
           const notifications = this.state.messages.concat(data);
-          console.log(notifications);
           this.setState({
             messages: notifications
           })
+          break;
+        case 'userCountChanged':
+          let userAmount = data.userCount;
+          this.onUserCountChange(userAmount);
           break;
         default:
         // show an error in the console if the message type is unknown
@@ -69,7 +72,13 @@ class App extends Component {
       currentUser: {name: input}
     })
   }
-
+  
+  // Function that takes the userCount data from the server and gives it to the client
+  onUserCountChange(data) {
+    this.setState({
+      online: data
+    })
+  }
 
   render() {
     console.log('Rendering <App/>');
@@ -77,6 +86,9 @@ class App extends Component {
       <div>
         <nav className="navbar">
           <a href="/" className="navbar-brand">Chatty</a>
+          <div className="currently-online">
+            {this.state.online} Users Online
+          </div>
         </nav>
         <MessageList messages={this.state.messages} />
         <ChatBar username={this.state.currentUser} enter={this.sendMessage}
