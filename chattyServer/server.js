@@ -5,7 +5,6 @@ const SocketServer = require('ws').Server;
 const uuidV1 = require('uuid/v1');
 const WebSocket = require('ws');
 
-console.log(uuidV1());
 
 // Set the port to 3001
 const PORT = 3001;
@@ -26,9 +25,7 @@ wss.on('connection', (ws) => {
   console.log('Client connected');
   ws.on('message', function incoming(message) {
     let theMessage = JSON.parse(message);
-    console.log(theMessage);
     if (theMessage.type === 'postMessage') {
-      console.log(theMessage);
       console.log(`User ${theMessage.username} said ${theMessage.content}`);
       let returnMessage = {
         type: 'incomingMessage',
@@ -43,7 +40,6 @@ wss.on('connection', (ws) => {
         }
       });
     } else if (theMessage.type === 'postNotification'){
-      console.log('cheers');
       let returnMessage = {
         type: 'incomingNotification',
         content: theMessage.content

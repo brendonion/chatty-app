@@ -8,7 +8,7 @@ class App extends Component {
     super(props);
 
     this.state = {
-      currentUser: {name: "Bob"},
+      currentUser: {name: "Anonymous"},
       messages: [] // messages coming from the server will be stored here as they arrive
     };
 
@@ -33,7 +33,11 @@ class App extends Component {
           })
           break;
         case 'incomingNotification':
-          console.log('the message', data.content);
+          const notifications = this.state.messages.concat(data);
+          console.log(notifications);
+          this.setState({
+            messages: notifications
+          })
           break;
         default:
         // show an error in the console if the message type is unknown
@@ -46,7 +50,6 @@ class App extends Component {
   sendMessage(input) {
     setTimeout(() => {
       const user = this.state.currentUser.name;
-      console.log(user);
       const newMessage = {type: 'postMessage', username: user, content: input};
       const sendMessage = JSON.stringify(newMessage);
       this.socket.send(sendMessage);
@@ -60,7 +63,6 @@ class App extends Component {
       type: 'postNotification', 
       content: (currentName + ' has changed their name to ' + input)
     };
-    console.log('input', input);
     const sendName = JSON.stringify(notification);
     this.socket.send(sendName);
     this.setState({
