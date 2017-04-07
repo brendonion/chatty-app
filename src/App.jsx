@@ -9,7 +9,7 @@ class App extends Component {
 
     this.state = {
       currentUser: {name: "Anonymous"},
-      messages: [], // messages coming from the server will be stored here as they arrive
+      messages: [], // Messages coming from the server will be stored here as they arrive
     };
 
     this.sendMessage = this.sendMessage.bind(this);
@@ -40,7 +40,12 @@ class App extends Component {
           break;
         case 'userCountChanged':
           let userAmount = data.userCount;
+          let userColor = data.color;
+          console.log('user color', userColor);
           this.onUserCountChange(userAmount);
+          this.setState({
+            colors: userColor
+          })
           break;
         default:
         // show an error in the console if the message type is unknown
@@ -79,6 +84,7 @@ class App extends Component {
       online: data
     })
   }
+
 
   render() {
     console.log('Rendering <App/>');

@@ -12,7 +12,7 @@ class MessageList extends React.Component {
             <Message key={index} username={message.username} content={message.content} />
             )
           } else if (message.type = 'incomingNotification') {
-            <div key={index}>{message.content}</div>
+            <div className="notify-change" key={index}>{message.content}</div>
           }
         })}
       </div>
