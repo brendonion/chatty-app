@@ -1,6 +1,10 @@
 import React from 'react';
 import Message from './Message.jsx';
 
+let divStyle = {
+  fontStyle: 'italic'
+};
+
 class MessageList extends React.Component {
   
   render() {
@@ -12,7 +16,7 @@ class MessageList extends React.Component {
             <Message key={index} username={message.username} content={message.content} />
             )
           } else if (message.type = 'incomingNotification') {
-            <div className="notify-change" key={index}>{message.content}</div>
+            <div style={divStyle} key={index}>{message.content}</div>
           }
         })}
       </div>

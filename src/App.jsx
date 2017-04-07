@@ -41,7 +41,6 @@ class App extends Component {
         case 'userCountChanged':
           let userAmount = data.userCount;
           let userColor = data.color;
-          console.log('user color', userColor);
           this.onUserCountChange(userAmount);
           this.setState({
             colors: userColor
@@ -93,7 +92,7 @@ class App extends Component {
         <nav className="navbar">
           <a href="/" className="navbar-brand">Chatty Onions</a>
           <h4 className="currently-online">
-            {this.state.online} Users Online
+            {this.state.online} User(s) Online
           </h4>
         </nav>
         <MessageList messages={this.state.messages} />
