@@ -9,7 +9,7 @@ class App extends Component {
 
     this.state = {
       currentUser: {name: "Anonymous"},
-      messages: [], // messages coming from the server will be stored here as they arrive
+      messages: [], // Messages coming from the server will be stored here as they arrive
     };
 
     this.sendMessage = this.sendMessage.bind(this);
@@ -40,7 +40,11 @@ class App extends Component {
           break;
         case 'userCountChanged':
           let userAmount = data.userCount;
+          let userColor = data.color;
           this.onUserCountChange(userAmount);
+          this.setState({
+            colors: userColor
+          })
           break;
         default:
         // show an error in the console if the message type is unknown
@@ -80,14 +84,15 @@ class App extends Component {
     })
   }
 
+
   render() {
     console.log('Rendering <App/>');
     return (
       <div>
         <nav className="navbar">
-          <a href="/" className="navbar-brand">Chatty</a>
+          <a href="/" className="navbar-brand">Chatty Onions</a>
           <h4 className="currently-online">
-            {this.state.online} Users Online
+            {this.state.online} User(s) Online
           </h4>
         </nav>
         <MessageList messages={this.state.messages} />
