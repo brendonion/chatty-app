@@ -6,12 +6,6 @@ const uuidV1 = require('uuid/v1');
 const WebSocket = require('ws');
 let onlineUsers = 0;
 
-function randomColor() {
-  let colors = ['#cc0000', '#003399', '#006600', '#663300'];
-  let random = Math.floor(Math.random() * (3 - 0)) + 0; 
-  return colors[random];
-}
-
 
 // Set the port to 3001
 const PORT = 3001;
@@ -34,13 +28,13 @@ wss.on('connection', (ws) => {
   wss.clients.forEach(function each(client) {
     let returnMessage = {
       type: 'userCountChanged',
-      userCount: onlineUsers,
-      color: randomColor()
+      userCount: onlineUsers
     }
     let broadcastMessage = JSON.stringify(returnMessage);
     client.send(broadcastMessage);
   });
 
+  // Broadcast messages based on the theMessage.type
   ws.on('message', function incoming(message) {
     let theMessage = JSON.parse(message);
     if (theMessage.type === 'postMessage') {
@@ -49,7 +43,8 @@ wss.on('connection', (ws) => {
         type: 'incomingMessage',
         id: uuidV1(),
         username: theMessage.username, 
-        content: theMessage.content
+        content: theMessage.content,
+        color: theMessage.color
       };
       let broadcastMessage = JSON.stringify(returnMessage);
       wss.clients.forEach(function each(client) {
@@ -70,7 +65,6 @@ wss.on('connection', (ws) => {
       });
     } 
   });
-
 
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
   ws.on('close', () => {
