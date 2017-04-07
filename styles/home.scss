@@ -59,8 +59,8 @@ body {
 }
 
 .message-username {
-  flex: 2;
   font-weight: 700;
+  width: 12%;
 }
 
 .navbar {
@@ -84,6 +84,7 @@ body {
   line-height: 60px;
   padding: 0 10px;
   text-decoration: none;
+  font-family: cursive; 
 }
 
 .currently-online {
