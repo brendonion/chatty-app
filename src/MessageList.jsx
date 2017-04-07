@@ -13,7 +13,7 @@ class MessageList extends React.Component {
         {this.props.messages.map(function (message, index) {
           if (message.type = 'incomingMessage') {
             return (
-            <Message key={index} username={message.username} content={message.content} />
+            <Message key={index} username={message.username} content={message.content} color={message.color} />
             )
           } else if (message.type = 'incomingNotification') {
             <div style={divStyle} key={index}>{message.content}</div>

@@ -3,6 +3,13 @@ import MessageList from './MessageList.jsx';
 import ChatBar from './ChatBar.jsx';
 
 
+// Generates a random color out of four colors 
+function randomColor() {
+  let colors = ['#cc0000', '#003399', '#006600', '#663300'];
+  let random = Math.floor(Math.random() * (3 - 0)) + 0; 
+  return colors[random];
+}
+
 class App extends Component {
   constructor(props){
     super(props);
@@ -10,6 +17,7 @@ class App extends Component {
     this.state = {
       currentUser: {name: "Anonymous"},
       messages: [], // Messages coming from the server will be stored here as they arrive
+      colors: randomColor()
     };
 
     this.sendMessage = this.sendMessage.bind(this);
@@ -25,6 +33,7 @@ class App extends Component {
     };
     this.socket.onmessage = (event) => {
     const data = JSON.parse(event.data);
+    console.log('on receival', event.data);
       switch (data.type) {
         case 'incomingMessage':
           const messages = this.state.messages.concat(data);
@@ -40,11 +49,7 @@ class App extends Component {
           break;
         case 'userCountChanged':
           let userAmount = data.userCount;
-          let userColor = data.color;
           this.onUserCountChange(userAmount);
-          this.setState({
-            colors: userColor
-          })
           break;
         default:
         // show an error in the console if the message type is unknown
@@ -57,7 +62,7 @@ class App extends Component {
   sendMessage(input) {
     setTimeout(() => {
       const user = this.state.currentUser.name;
-      const newMessage = {type: 'postMessage', username: user, content: input};
+      const newMessage = {type: 'postMessage', username: user, content: input, color: this.state.colors};
       const sendMessage = JSON.stringify(newMessage);
       this.socket.send(sendMessage);
     }, 1000);
@@ -84,7 +89,7 @@ class App extends Component {
     })
   }
 
-
+  // Render the full App with all the components
   render() {
     console.log('Rendering <App/>');
     return (
