@@ -1,44 +1,40 @@
-React Boilerplate
-=====================
 
-A minimal and light dev environment for ReactJS.
 
-### Usage
+### Project Description
 
-Clone the boilerplate and create your own git repo.
 
-```
-git clone git@github.com:lighthouse-labs/react-simple-boilerplate.git
-git remote rm origin
-git remote add origin [YOUR NEW REPOSITORY]
-# Manually update your package.json file
-```
+## Goal
 
-Install the dependencies and start the server.
+Chatty will allow users to communicate with each other without having to register accounts. It will use React, a popular front-end library created and used heavily by Facebook as well as modern tools for Node including Webpack and Babel.
 
-```
-npm install
-npm start
-open http://localhost:3000
-```
+![Final ChatyApp](http://d.pr/i/uwnJ/2burf8M1+)
 
-### Static Files
+## Functional Requirements
 
-You can store static files like images, fonts, etc in the `build` folder.
+*   Primarily a client-side SPA (single-page app) built with ReactJS
 
-For example, if you copy a file called my_image.png into the build folder you can access it using `http://localhost:3000/build/my_image.png`.
+    *   Based on the HTML and CSS provided
+    *   Contains a chat log displaying messages and notifications
+    *   Contains an input field to change your name and an input field to send a message
+*   The client-side app communicates with a server via WebSockets for multi-user real-time updates
+*   No persistent database is involved; the focus is on the client-side experience
 
-### Linting
+Behaviour:
 
-This boilerplate project includes React ESLint configuration.
+*   When any connected user sends a chat message, all connected users receive and display the message
+*   When any connected user changes their name, all connected users are notified of the name change
 
-```
-npm run lint
-```
+    *   Notifications are styled differently from chat messages
+*   Header will display the count of connected users
+*   When the number of connected users changes, this count will be updated for all connected users
+*   (STRETCH) Different users' names will each be coloured differently
 
-### Dependencies
+    *   Bonus: the colouring is consistent between connected user instances or is calculated algorithmically based on their name, or is manually selectable by users, or any other interesting approach!
 
-* React
-* Webpack
-* [babel-loader](https://github.com/babel/babel-loader)
-* [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
+## Technical Specifications
+
+Stack:
+
+*   Webpack with Babel, JSX, ES6, webpack dev server (comes with boilerplate)
+*   WebSockets using Node package `ws` on the server-side, and native `WebSocket` on client side
+*   ReactJS
